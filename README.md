@@ -16,7 +16,7 @@
 
 ## 🌍 Live Demo
 
-🔗 **[https://namdarex.github.io/my_resume_site_main/](https://namdarex.github.io/my_resume_site_main/)**
+🔗 **[https://namdarex.github.io/resume_site/](https://namdarex.github.io/resume_site/)**
 
 ---
 
