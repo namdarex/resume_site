@@ -8,6 +8,10 @@ const EMAILJS_CONFIG = {
     enabled: true
 };
 
+const COUNTER_ENDPOINT = '';
+let visitTotal = null;
+const SCRAMBLE_GLYPHS = '<>/{}[]#$%&*=_+~^01';
+
 const toFa = (n) => String(n).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
 
 function initLanguage() {
@@ -38,6 +42,7 @@ function initLanguage() {
         if (langText) langText.textContent = isEn ? 'فا' : 'EN';
         localStorage.setItem('resume-lang', lang);
         if (window.resetTyping) window.resetTyping();
+        if (window.renderVisits) window.renderVisits();
         if (notify) showToast(isEn ? '🌐 Switched to English' : '🌐 فارسی فعال شد', 'info');
     }
 }
@@ -510,6 +515,181 @@ function initCommandPalette() {
     });
 }
 
+function initScramble() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.logo-text').forEach((el) => {
+        let running = false;
+        const run = () => {
+            if (running) return;
+            running = true;
+            const lang = document.documentElement.lang;
+            const final = el.textContent;
+            let f = 0;
+            const tick = () => {
+                if (document.documentElement.lang !== lang) { el.textContent = final; running = false; return; }
+                el.textContent = Array.from(final).map((c, i) => (i < f / 2 ? c : SCRAMBLE_GLYPHS[Math.floor(Math.random() * SCRAMBLE_GLYPHS.length)])).join('');
+                if (f++ < final.length * 2) requestAnimationFrame(tick);
+                else { el.textContent = final; running = false; }
+            };
+            tick();
+        };
+        const host = el.closest('.logo') || el;
+        host.addEventListener('mouseenter', run);
+        if (el.closest('.navbar')) setTimeout(run, 300);
+    });
+}
+
+function initParallax() {
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    hero.addEventListener('pointermove', (e) => {
+        const r = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+        hero.style.setProperty('--my', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+    });
+    hero.addEventListener('pointerleave', () => {
+        hero.style.setProperty('--mx', '0');
+        hero.style.setProperty('--my', '0');
+    });
+}
+
+function initCursor() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    const dot = document.querySelector('.cursor-dot');
+    const ring = document.querySelector('.cursor-ring');
+    if (!dot || !ring) return;
+    document.body.classList.add('custom-cursor');
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let rx = x;
+    let ry = y;
+    window.addEventListener('pointermove', (e) => { x = e.clientX; y = e.clientY; }, { passive: true });
+    const loop = () => {
+        rx += (x - rx) * 0.18;
+        ry += (y - ry) * 0.18;
+        dot.style.transform = `translate(${x}px, ${y}px)`;
+        ring.style.transform = `translate(${rx}px, ${ry}px)`;
+        requestAnimationFrame(loop);
+    };
+    loop();
+    document.querySelectorAll('a, button, input, textarea, .edu-card, .stat-box').forEach((el) => {
+        el.addEventListener('mouseenter', () => ring.classList.add('big'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('big'));
+    });
+}
+
+function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    document.querySelectorAll('.edu-card, .stat-box').forEach((c) => {
+        c.addEventListener('pointermove', (e) => {
+            const r = c.getBoundingClientRect();
+            const tRx = ((e.clientY - r.top) / r.height - 0.5) * -8;
+            const tRy = ((e.clientX - r.left) / r.width - 0.5) * 8;
+            c.style.transition = 'transform 0.2s ease-out';
+            c.style.transform = `perspective(900px) rotateX(${tRx.toFixed(2)}deg) rotateY(${tRy.toFixed(2)}deg) translateY(-6px)`;
+        });
+        c.addEventListener('pointerleave', () => {
+            c.style.removeProperty('transform');
+            c.style.removeProperty('transition');
+        });
+    });
+}
+
+function initTerminal() {
+    const term = document.getElementById('terminal');
+    const pre = document.getElementById('termPre');
+    if (!term || !pre) return;
+    const caret = pre.querySelector('.term-caret');
+    const lines = [
+        { cmd: 'whoami', out: 'sadegh — frontend developer & ui designer' },
+        { cmd: 'npm run skills', out: 'react ✓ vue ✓ node ✓ flutter ✓ figma ✓' },
+        { cmd: 'cat status.txt', out: 'available for new projects' },
+        { cmd: 'echo $EMAIL', out: 'sadeghhajizadeh999@gmail.com' },
+        { cmd: '', out: '' }
+    ];
+    const typeInto = (node, text, speed, cb) => {
+        let k = 0;
+        const tick = () => {
+            node.textContent = text.slice(0, ++k);
+            if (k < text.length) setTimeout(tick, speed);
+            else cb();
+        };
+        tick();
+    };
+    const printAll = () => {
+        lines.forEach((l) => {
+            const line = document.createElement('div');
+            line.textContent = '$ ' + l.cmd;
+            pre.insertBefore(line, caret);
+            if (l.out) {
+                const out = document.createElement('div');
+                out.className = 'term-out';
+                out.textContent = '> ' + l.out;
+                pre.insertBefore(out, caret);
+            }
+        });
+    };
+    const run = () => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { printAll(); return; }
+        let i = 0;
+        const next = () => {
+            if (i >= lines.length) return;
+            const l = lines[i++];
+            const line = document.createElement('div');
+            const prompt = document.createElement('span');
+            prompt.className = 'term-p';
+            prompt.textContent = '$';
+            const cmd = document.createElement('span');
+            line.appendChild(prompt);
+            line.insertAdjacentText('beforeend', ' ');
+            line.appendChild(cmd);
+            pre.insertBefore(line, caret);
+            typeInto(cmd, l.cmd, 55, () => {
+                if (l.out) {
+                    const out = document.createElement('div');
+                    out.className = 'term-out';
+                    out.textContent = '> ' + l.out;
+                    pre.insertBefore(out, caret);
+                    setTimeout(next, 340);
+                } else setTimeout(next, 300);
+            });
+        };
+        setTimeout(next, 400);
+    };
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+            if (e.isIntersecting) { run(); obs.disconnect(); }
+        });
+    }, { threshold: 0.3 });
+    obs.observe(term);
+}
+
+function renderVisits() {
+    const el = document.getElementById('visitCount');
+    if (!el || visitTotal === null) return;
+    const isEn = document.documentElement.lang === 'en';
+    el.textContent = isEn
+        ? 'Viewed ' + visitTotal.toLocaleString('en-US') + ' times'
+        : 'این صفحه ' + toFa(visitTotal.toLocaleString('en-US')) + ' بار دیده شده';
+    el.hidden = false;
+}
+
+function initVisitCounter() {
+    window.renderVisits = renderVisits;
+    if (!COUNTER_ENDPOINT) return;
+    fetch(COUNTER_ENDPOINT)
+        .then((res) => (res.ok ? res.json() : Promise.reject()))
+        .then((data) => {
+            visitTotal = Number(data.total ?? data.count ?? 0);
+            renderVisits();
+        })
+        .catch(() => {});
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initLanguage();
     initTheme();
@@ -528,5 +708,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initCommandPalette();
     initEmailJS();
     initForm();
+    initScramble();
+    initParallax();
+    initCursor();
+    initTilt();
+    initTerminal();
+    initVisitCounter();
 });
 })();
