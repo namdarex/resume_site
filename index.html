@@ -22,6 +22,9 @@
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
  
@@ -47,6 +50,8 @@
     </script>
 </head>
 <body>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <div class="bg-animation" aria-hidden="true">
@@ -85,6 +90,7 @@
                 <li><a href="#education" class="nav-link" data-fa="تحصیلات" data-en="Education">تحصیلات</a></li>
                 <li><a href="#contact" class="nav-link" data-fa="تماس" data-en="Contact">تماس</a></li>
             </ul>
+            <span class="live-badge"><span class="live-dot"></span><span data-fa="آماده برای همکاری" data-en="Open to work">آماده برای همکاری</span></span>
             <button class="menu-toggle" id="menuToggle" aria-label="منو">
                 <span></span><span></span><span></span>
             </button>
@@ -93,15 +99,21 @@
 
     <main>
         <section class="hero" id="hero">
+            <div class="hero-watermark" aria-hidden="true">&lt;/&gt;</div>
             <div class="hero-content">
+                <div class="hero-avatar-par">
                 <div class="hero-avatar reveal">
                     <div class="avatar-ring"></div>
                     <div class="avatar-circle">
                         <img src="profile.jpg" alt="صادق حاجی‌زاده" class="avatar-img">
                     </div>
                 </div>
+                </div>
                 <p class="hero-greeting reveal" data-fa="👋 سلام، من" data-en="👋 Hi, I'm">👋 سلام، من</p>
-                <h1 class="hero-name reveal" data-fa="صادق حاجی‌زاده" data-en="Sadegh Hajizadeh">صادق حاجی‌زاده</h1>
+                <div class="hero-name-wrap reveal">
+                    <h1 class="hero-name" data-fa="صادق حاجی‌زاده" data-en="Sadegh Hajizadeh">صادق حاجی‌زاده</h1>
+                    <svg class="squiggle" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16C72 6 148 22 216 10S344 18 396 6"/></svg>
+                </div>
                 <h2 class="hero-title reveal">
                     <span class="typed-text" id="typedText"></span><span class="cursor">|</span>
                 </h2>
@@ -183,6 +195,10 @@
                             <span class="stat-label" data-fa="گواهی‌نامه" data-en="Certificates">گواهی‌نامه</span>
                         </div>
                     </div>
+                </div>
+                <div class="terminal reveal" id="terminal">
+                    <div class="term-bar"><i></i><i></i><i></i><span>portfolio — zsh</span></div>
+                    <pre class="term-pre" id="termPre"><span class="term-caret"></span></pre>
                 </div>
             </div>
         </section>
@@ -332,39 +348,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="marquee-wrap reveal">
-                    <div class="marquee">
-                        <div class="marquee-track">
-                            <span class="marquee-item"><i class="fa-brands fa-html5"></i> HTML5</span>
-                            <span class="marquee-item"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
-                            <span class="marquee-item"><i class="fa-brands fa-js"></i> JavaScript</span>
-                            <span class="marquee-item"><i class="fa-brands fa-react"></i> React</span>
-                            <span class="marquee-item"><i class="fa-brands fa-vuejs"></i> Vue.js</span>
-                            <span class="marquee-item"><i class="fa-brands fa-node-js"></i> Node.js</span>
-                            <span class="marquee-item"><i class="fa-brands fa-python"></i> Python</span>
-                            <span class="marquee-item"><i class="fa-brands fa-dart-lang"></i> Dart</span>
-                            <span class="marquee-item"><i class="fa-solid fa-mobile-screen-button"></i> Flutter</span>
-                            <span class="marquee-item"><i class="fa-solid fa-database"></i> MongoDB</span>
-                            <span class="marquee-item"><i class="fa-brands fa-git-alt"></i> Git</span>
-                            <span class="marquee-item"><i class="fa-brands fa-figma"></i> Figma</span>
-                            <span class="marquee-item"><i class="fa-brands fa-wordpress"></i> WordPress</span>
-                            <span class="marquee-item"><i class="fa-solid fa-code"></i> TypeScript</span>
+                <div class="jaws reveal">
+                    <div class="band band-a">
+                        <div class="band-inner">
+                            <div class="band-track">HTML5 ✦ CSS3 ✦ JavaScript ✦ React ✦ Vue.js ✦ Node.js ✦ Python ✦ Dart ✦ Flutter ✦ MongoDB ✦ Git ✦ Figma ✦ WordPress ✦ TypeScript ✦ </div>
+                            <div class="band-track" aria-hidden="true">HTML5 ✦ CSS3 ✦ JavaScript ✦ React ✦ Vue.js ✦ Node.js ✦ Python ✦ Dart ✦ Flutter ✦ MongoDB ✦ Git ✦ Figma ✦ WordPress ✦ TypeScript ✦ </div>
                         </div>
-                        <div class="marquee-track" aria-hidden="true">
-                            <span class="marquee-item"><i class="fa-brands fa-html5"></i> HTML5</span>
-                            <span class="marquee-item"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
-                            <span class="marquee-item"><i class="fa-brands fa-js"></i> JavaScript</span>
-                            <span class="marquee-item"><i class="fa-brands fa-react"></i> React</span>
-                            <span class="marquee-item"><i class="fa-brands fa-vuejs"></i> Vue.js</span>
-                            <span class="marquee-item"><i class="fa-brands fa-node-js"></i> Node.js</span>
-                            <span class="marquee-item"><i class="fa-brands fa-python"></i> Python</span>
-                            <span class="marquee-item"><i class="fa-brands fa-dart-lang"></i> Dart</span>
-                            <span class="marquee-item"><i class="fa-solid fa-mobile-screen-button"></i> Flutter</span>
-                            <span class="marquee-item"><i class="fa-solid fa-database"></i> MongoDB</span>
-                            <span class="marquee-item"><i class="fa-brands fa-git-alt"></i> Git</span>
-                            <span class="marquee-item"><i class="fa-brands fa-figma"></i> Figma</span>
-                            <span class="marquee-item"><i class="fa-brands fa-wordpress"></i> WordPress</span>
-                            <span class="marquee-item"><i class="fa-solid fa-code"></i> TypeScript</span>
+                    </div>
+                    <div class="band band-b">
+                        <div class="band-inner">
+                            <div class="band-track">git push origin main · npm run build · docker compose up -d · npm run deploy · node --version · </div>
+                            <div class="band-track" aria-hidden="true">git push origin main · npm run build · docker compose up -d · npm run deploy · node --version · </div>
                         </div>
                     </div>
                 </div>
@@ -501,7 +495,9 @@
                 </div>
             </div>
         </div>
+        <p class="wordmark" aria-hidden="true" data-fa="صادق حاجی‌زاده" data-en="SADEGH">صادق حاجی‌زاده</p>
         <div class="footer-bottom">
+            <p class="visit-count" id="visitCount" hidden></p>
             <p data-fa="© ۱۴۰۵ صادق حاجی‌زاده" data-en="© 2026 Sadegh Hajizadeh">© ۱۴۰۵ صادق حاجی‌زاده</p>
         </div>
     </footer>
