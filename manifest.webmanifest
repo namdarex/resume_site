@@ -1,0 +1,13 @@
+{
+  "name": "Sadegh Hajizadeh | Resume",
+  "short_name": "SH Resume",
+  "description": "رزومه صادق حاجی‌زاده — توسعه‌دهنده و طراح وب",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0a12",
+  "theme_color": "#a855f7",
+  "orientation": "any",
+  "icons": [
+    { "src": "favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
